@@ -5,6 +5,16 @@ get AI-powered answers backed by 34 years of real humanitarian data.
 
 ---
 
+## Demo
+
+![Demo Homepage](assets/Demo_homepage.png)
+![Question 1](assets/Demo_question_1.png)
+![Question 2](assets/Demo_question_2.png)
+![Question 3](assets/Demo_question_3.png)
+![Question 4](assets/Demo_question_4.png)
+
+---
+
 ## What It Does
 
 - Ingests **205,000+ food price records** across 32 Indian states (1994–2026) and **state-level poverty (MPI) data** from OCHA HDX
@@ -101,10 +111,15 @@ pip install -r requirements.txt
 # 4. Add your Anthropic API key
 echo ANTHROPIC_API_KEY=your_key_here > .env
 
-# 5. Run the API
+# 5. Run ingestion notebook (one time only — can takes upto several hours on depending upon CPU)
+# Open notebooks/03_chromadb_ingestion.ipynb and run all cells
+
+# 6. Run the API
 cd src
 uvicorn app:app --reload
 ```
+> **Note:** ChromaDB vectorstore files are not included in this repo due to 
+> size limits (500MB+). Run the ingestion notebook once to generate them locally.
 
 Then visit `http://localhost:8000/docs` to test via Swagger UI.
 
@@ -113,4 +128,4 @@ Then visit `http://localhost:8000/docs` to test via Swagger UI.
 ## Author
 
 **Saurabh** — transitioning from data analytics to agentic AI engineering.  
-GitHub: https://github.com/Ifsaurabh/RAG-Humanitarian-risk-analysis-India
+GitHub: https://github.com/Ifsaurabh
