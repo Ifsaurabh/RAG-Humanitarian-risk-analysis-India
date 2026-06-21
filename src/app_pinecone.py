@@ -23,6 +23,8 @@ pine_client = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
 security = HTTPBasic()
 correct_username = os.getenv("BASIC_AUTH_USERNAME")
 correct_password = os.getenv("BASIC_AUTH_PASSWORD")
+demo_username = os.getenv("DEMO_USERNAME")
+demo_password = os.getenv("DEMO_PASSWORD")
 
 # verify credentials
 def verify_credentials(credentials: HTTPBasicCredentials = Depends(security)):
@@ -31,8 +33,16 @@ def verify_credentials(credentials: HTTPBasicCredentials = Depends(security)):
             status_code=500,
             detail="Server misconfiguration: auth credentials not set"
         )
-    if not secrets.compare_digest(credentials.username, correct_username) or \
-       not secrets.compare_digest(credentials.password, correct_password):
+
+    valid_pairs = [(correct_username, correct_password)]
+    if demo_username and demo_password:
+        valid_pairs.append((demo_username, demo_password))
+
+    is_valid = any(
+        secrets.compare_digest(credentials.username, u) and secrets.compare_digest(credentials.password, p)
+        for u, p in valid_pairs
+    )
+    if not is_valid:
         raise HTTPException(status_code=401, detail="Invalid credentials")
     return credentials
 
@@ -119,7 +129,7 @@ Context: {context}"""),
     return response.content
 
 # logging report to s3 as local folder
-LOG_FILE_PATH = "../logs/qa_log.jsonl"
+LOG_FILE_PATH = "/app/logs/qa_log.jsonl"
 S3_BUCKET = "my-test-bucket9966"
 S3_KEY = "rag-qa-logs/qa_log.jsonl"
 

@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pydantic
+python-dotenv
+pinecone
+sentence-transformers
+langchain-anthropic
+langchain-core
+boto3
