@@ -159,7 +159,22 @@ def root():
     return {"status": "Humanitarian RAG API is running"}
 
 # Main endpoint ----------------------------------------------------
-@app.post("/ask")
+@app.post("/ask", description="""
+Ask questions about India's food prices and poverty data (1994–2026).
+
+**Best results with questions about:**
+- Food commodity prices (rice, wheat, dal, oil) in any Indian state
+- Poverty and MPI levels by state
+- Price trends over time for a specific state and commodity
+- Comparing poverty levels across states
+
+**Suggested questions to try:**
+- "What is the poverty situation in Uttar Pradesh?"
+- "How have rice prices changed in Bihar over 10 years?"
+- "Which states have the worst poverty levels?"
+- "What is the food security situation in Maharashtra?"
+- "What is the wheat price trend in Punjab?"
+""")
 def ask_endpoint(body: Question, credentials: HTTPBasicCredentials = Depends(security)):
     verify_credentials(credentials)
     answer = ask(body.question)
